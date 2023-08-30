@@ -6,6 +6,8 @@ export default function GameLogic() {
     const [points, setPoints] = useState(20);
     const [guess, setGuess] = useState('');
     const [message, setMessage] = useState('');
+    const [guessTracker, setGuessTracker] = useState([]);
+    const [guessTrackerOn, setGuessTrackerOn] = useState(false);
 
 
     function generateRandomNumber() {
@@ -21,19 +23,21 @@ export default function GameLogic() {
         console.log(randomNumber);
 
         const guessedNumber = parseInt(guess, 10);
+        setGuessTracker(guessedNumber);
+        setGuessTrackerOn(true);
 
         if (guessedNumber === randomNumber) {
             setMessage(`Congratulations! You guessed the hidden number ${randomNumber}`);
         }
         else if (guessedNumber > randomNumber) {
-            setMessage(`Your guess was too high! Try again`);
+            setMessage(`Hint: Your guess was too high! Try again`);
             setPoints(points - 1);
-            setMessage(`Your new score is ${points - 1}`)
+            setGuessTracker(guess)
         }
         else if (guessedNumber < randomNumber) {
-            setMessage(`Your guess was too low! Try again`);
+            setMessage(`Hint: Your guess was too low! Try again`);
             setPoints(points - 1);
-            setMessage(`Your new score is ${points - 1}`)
+            setGuessTracker(guess)
         }
         setGuess('');
     }
@@ -52,6 +56,7 @@ export default function GameLogic() {
                 />
                 <button type='submit'>submit</button>
             </form>
+            {guessTrackerOn ? <p>Your guess: {guessTracker}</p> : ''}
         </div>
     )
 }
